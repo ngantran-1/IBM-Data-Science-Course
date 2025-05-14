@@ -100,10 +100,11 @@ def get_pie_chart(entered_site):
 def get_scatter_plot(entered_site, slider_range_list):
     min_value = slider_range_list[0]
     max_value = slider_range_list[1]
+    mask = (spacex_df['Payload Mass (kg)'] >= min_value) & (spacex_df['Payload Mass (kg)'] <= max_value)
     filtered_df = spacex_df.loc[(spacex_df['Launch Site'] == entered_site) & (spacex_df['Payload Mass (kg)'] >= min_value) & (spacex_df['Payload Mass (kg)'] <= max_value)]
     title = f'Correlation between Payload and Success for {entered_site} '
     if entered_site == 'ALL':
-        fig = px.scatter(spacex_df, x='Payload Mass (kg)', y='class', color='Booster Version Category', title='Correlation between Payload and Success for all Sites')
+        fig = px.scatter(spacex_df[mask], x='Payload Mass (kg)', y='class', color='Booster Version Category', title='Correlation between Payload and Success for all Sites')
         return fig
     else:
         fig = px.scatter(filtered_df, x='Payload Mass (kg)', y='class', color='Booster Version Category', title=title)
